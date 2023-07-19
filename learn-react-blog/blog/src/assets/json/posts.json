@@ -1,0 +1,79 @@
+[
+  {
+    "id": "1",
+    "section": "Últimos Posts",
+    "posts": [
+      {
+        "title": "Viaje a Roma",
+        "subtitle": "Pizzas al mejor precio",
+        "image": "roma.png"
+      },
+      {
+        "title": "Viaje a Toledo",
+        "subtitle": "Toletum y buen acero",
+        "image": "toledo.jpg"
+      },
+      {
+        "title": "Viaje a Salamanca",
+        "subtitle": "Hay ranas",
+        "image": "salamanca.jpg"
+      },
+      {
+        "title": "Viaje a Uganda",
+        "subtitle": "Hay gente y no nieva (por ahora)",
+        "image": "uganda-forever.jpg"  
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "section": "Guías",
+    "posts": [
+      {
+        "title": "Roma",
+        "subtitle": "Pizzas",
+        "image": "roma.png"
+      },
+      {
+        "title": "Toledo",
+        "subtitle": "Toletum",
+        "image": "toledo.jpg"
+      },
+      {
+        "title": "Salamanca",
+        "subtitle": "",
+        "image": "salamanca.jpg"
+      },
+      {
+        "title": "Uganda",
+        "subtitle": "",
+        "image": "uganda-forever.jpg"  
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "section": "Guías",
+    "posts": [
+      {
+        "title": "10 tips para ir a la playa",
+        "subtitle": "Playa playa playa",
+        "image": "playa.jpg"
+      },
+      {
+        "title": "10 trucos para hacer la maleta",
+        "subtitle": "",
+        "image": "maleta.jpg"
+      },
+      {
+        "title": "3 tips para viajar en coche",
+        "subtitle": "No te dejes el bocadillo",
+        "image": "car.jpg"
+      }
+    ]
+  },
+  {
+    "id": "4",
+    "section": "Sección sin contenido"
+  }
+]
