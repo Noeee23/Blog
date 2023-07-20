@@ -1,159 +1,150 @@
 require('dotenv').config()
+// const { Op, Sequelize, DataTypes } = require("sequelize");
+const { sequelize, sincronizarTablas, Post, Section } = require('./tables')
 
-const { Op, Sequelize, DataTypes } = require("sequelize");
-const sequelize = new Sequelize(
-    process.env.DB_NAME,
-    process.env.DB_USER,
-    process.env.DB_PASS,
-     {
-       host: process.env.DB_HOST,
-       dialect: process.env.DB_DIALECT
-     }
-   );
+// Aplicación de express
+const express = require('express');
+const app = express()
+const bodyParser = require('body-parser')
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+const cors = require('cors'); 
+const { sections } = require('./Data/sections');
+app.use(cors()) 
 
-   const Post = sequelize.define("posts", {
-    title: {
-      type: DataTypes.STRING(75),
-      allowNull: false
-    },
-    subtitle: {
-      type: DataTypes.STRING(150),
-      allowNull: true
-    },
-    img: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
-    sectionId: {
-      type: DataTypes.INTEGER,
-      allowNull: false
+// Llamada a la fn para actualizar tablas en base de datos:
+// sincronizarTablas()
+
+// Sincroniza las tablas en la base de datos
+app.get('/', (req, res) => {
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.end('Bienvenido a Express');
+});
+
+// Post
+app.get('/posts', (req, res) => {
+  Post.findAll().then(posts => {
+     // Este console.log es para ver los datos en consola (dataValues):
+    posts.map(post => console.log(post.dataValues))
+     // Response del endpoint:
+    res.json(posts)
+  })
+});
+
+// GET de un post por id
+app.get('/posts/:id', (req, res) => {
+  const id = req.params.id; // leemos el id de la url
+  Post.findOne({
+    where: {
+      id: id
     }
-  });
-
-  const posts = [
-        {
-        title: "Viaje a Roma",
-        subtitle: "Pizzas al mejor precio",
-        img: "roma.png",
-        sectionId: 1
-        },
-        {
-        title: "Viaje a Toledo",
-        subtitle: "Toletum y buen acero",
-        img: "toledo.jpg",
-        sectionId: 1
-        },
-        {
-        title: "Viaje a Salamanca",
-        subtitle: "Hay ranas",
-        img: "salamanca.jpg",
-        sectionId: 1
-        },
-    {
-        title: "Viaje a Uganda",
-        subtitle: "Hay gente y no nieva (por ahora)",
-        img: "uganda-forever.jpg",
-        sectionId: 1  
-        },
-    {
-        title: "Roma 2",
-        subtitle: "Pizzas 2",
-        img: "roma.png",
-        sectionId: 2
-      },
-    {
-        title: "Toledo 2",
-        subtitle: "Toletum",
-        img: "toledo.jpg",
-        sectionId: 2
-      },
-    {
-        title: "Salamanca 2",
-        subtitle: "",
-        img: "salamanca.jpg",
-        sectionId: 2
-      },
-    {
-        title: "Uganda 2",
-        subtitle: "",
-        img: "uganda-forever.jpg" ,
-        sectionId: 2
-      },
-    {
-        title: "10 tips para ir a la playa",
-        subtitle: "Playa playa playa",
-        img: "playa.jpg",
-        sectionId: 3
-      },
-    {
-        title: "10 trucos para hacer la maleta",
-        subtitle: "",
-        img: "maleta.jpg",
-        sectionId: 3
-      },
-    {
-        title: "3 tips para viajar en coche",
-        subtitle: "No te dejes el bocadillo",
-        img: "car.jpg",
-        sectionId: 3
+  }).then( 
+    post => {
+      console.log(post);
+      post ? res.json(post) : res.end("El id introducido no es valida")
     }
-  ]
+  )
+})
 
-  const Section = sequelize.define("sections", {
-    section: {
-      type: DataTypes.STRING(100),
-      allowNull: false
-    },
-    order: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        defaultValue: 0
-       }
- });
+// POST para crear nuevo post
+app.post('/posts', (req, res) => {
+  let nuevoPost = req.body 
+  Post.create(nuevoPost).then(post => {
+    console.log(post)
+    res.status(201).json(post)
+  })
+});
 
-    const sections = [
-        {
-        section: "Últimos Posts",
-        order: 1
-      },
-    {
-        section: "Guías",
-        order: 2
-      },
-    {
-        section: "Tips",
-        order: 3
-      },
-    {
-        section: "Sección sin contenido",
-        order: 4
-      }
-    ]
+// Endpoint UPDATE para editar post
+app.patch('/posts/:id', (req, res) => {
+  const id = req.params.id;
+  const datos = req.body; // Los valores a actualizar
+  Post.update(datos, {
+    where: {
+      id: id
+    }
+  }).then(data => {
+    console.log(data);
+    res.json({"mensaje": `El post con id ${id} se ha actualizado con: ` + JSON.stringify(datos)})
+  })
+})
 
-sequelize.authenticate().then(() => {
-    console.log('Hemos conectado a la base de datos.');
-  }).catch((error) => {
-    console.error('Ha habido un error: ', error);
-  });
+// Endpoint DELETE para borrar post
+app.delete('/posts/:id', (req, res) => {
+  const id = req.params.id;
+  Post.destroy({
+    where: {
+      id: id
+    }
+  }).then(data => {
+    console.log(data);
+    res.end(`El post con id ${id} ha sido borrado`)
+  })
+})
 
-sequelize.sync().then(() => {
-    console.log('Tablas creadas.');
-    // Post.bulkCreate(posts) 
-    // Section.bulkCreate(sections)
-    Post.findAll().then(res => {
-        console.log(res)
-    }).catch((error) => {
-        console.error('No se encontraron los datos: ', error);
-    });
-  }).catch((error) => {
-    console.error('Hubo un error al crear la tabla : ', error);
-  });
+// Post
+app.get('/sections', (req, res) => {
+  Section.findAll().then(sections => {
+     // Este console.log es para ver los datos en consola (dataValues):
+    sections.map(section => console.log(section.dataValues))
+     // Response del endpoint:
+    res.json(sections)
+  })
+});
 
-//   Post.destroy(
-//     { 
-//       truncate: true,
-//       where: {
-//         id: { [Op.gte]: 1 }
-//       }
-//     }
-//   )
+// GET de una section por id
+app.get('/sections/:id', (req, res) => {
+  const id = req.params.id; // leemos el id de la url
+  Section.findOne({
+    where: {
+      id: id
+    }
+  }).then( 
+    section => {
+      console.log(section);
+      section ? res.json(sections) : res.end("El id introducido no es valida")
+      // section ? res.json(section) : res.json({"mensaje": "Ese id no es válido"}).catch() (atrapa error)
+    }
+  )
+})
+// POST para crear nuevo section
+app.post('/sections', (req, res) => {
+  let nuevaSection = req.body 
+  Section.create(nuevaSection).then(section => {
+    console.log(section)
+    res.status(201).json(section)
+  })
+});
+
+// Endpoint UPDATE para editar section
+app.patch('/sections/:id', (req, res) => {
+  const id = req.params.id;
+  const datos = req.body; // Los valores a actualizar
+  Section.update(datos, {
+    where: {
+      id: id
+    }
+  }).then(data => {
+    console.log(data);
+    res.json({"mensaje": `La section con id ${id} se ha actualizado con: ` + JSON.stringify(datos)})
+  })
+})
+
+// Endpoint DELETE para borrar section
+app.delete('/sections/:id', (req, res) => {
+  const id = req.params.id;
+  Section.destroy({
+    where: {
+      id: id
+    }
+  }).then(section => {
+    console.log(section);
+    res.end(`La section con id ${id} ha sido borrado`)
+  })
+})
+
+
+const PORT = 3000
+app.listen(PORT, () => {
+  console.log("Servidor en ejecución en http://localhost:" + PORT)}
+);

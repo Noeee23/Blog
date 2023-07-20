@@ -12,7 +12,7 @@
     "express",
     "sequelize"
   ],
-  "author": "César P.",
+  "author": "Noee.",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.2",
