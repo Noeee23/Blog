@@ -1,19 +1,38 @@
-import logo from '/favicon.png'
+import logo from '/logo.jpg'
+import { Link } from "react-router-dom";
+import { useEffect, useState } from 'react';
 
 const Navbar = () => {
+  
+  const [mostrarBtn, setMostrarBtn] = useState(true);
+  const [path, setPath] = useState("/")
+  
+  const handleBtn = () => {
+    setPath(window.location.pathname)
+    console.log("path:", window.location.pathname, mostrarBtn)
+    if(pathActual == "/crear"){
+      setMostrarBtn(false)
+    }else{
+      setMostrarBtn(true)
+    }
+  }
+  
   return (
   <>
-    <div className='d-flex py-2 px-3 border border-danger justify-content-between align-items-center'>
-      <div className='d-flex justify-content-between align-items-center'>
-        <img  className='mx-2' src={logo} alt="logo del blog" width={50} />
-        <h2 className='mx-2' >Blog</h2>
-      </div>
+    <div id="navbar" className='d-flex py-2 px-3 justify-content-between align-items-center'>
+      <Link to="/" className='d-flex justify-content-between align-items-center'>
+        <img  className='mx-2' src={logo} alt="logo del blog" width={50}/>
+        <h2 className='mx-2' >Mi Blog</h2>
+      </Link>
       <ul className='d-flex align-items-center m-0' style={{listStyleType: 'none', paddingLeft: 0}}>
-        <li className='d-inline-block mx-3'><a href='#'>Link 1</a></li>
-        <li className='d-inline-block mx-3'><a href='#'>Link 2</a></li>
-        <li className='d-inline-block mx-3'><a href='#'>Link 3</a></li>
-        <li className='d-inline-block mx-3'><a href='#'>Link 4</a></li>
-        <li className='d-inline-block mx-3'><a href='#'>Link 5</a></li>
+        <li className='d-inline-block mx-3'><a href='#' className='btn btn-secondary text-light disabled' role="button" aria-disabled="true">Link 1</a></li>
+        <li className='d-inline-block mx-3'><a href='#' className='btn btn-secondary text-light disabled' role="button" aria-disabled="true">Link 2</a></li>
+        <li className='d-inline-block mx-3'><a href='#' className='btn btn-secondary text-light disabled' role="button" aria-disabled="true">Link 3</a></li>
+        <li className='d-inline-block mx-3'><a href='#' className='btn btn-secondary text-light disabled' role="button" aria-disabled="true">Link 4</a></li>
+        
+        { mostrarBtn &&
+          <li className='d-inline-block mx-3'><Link to='crear' className='btn btn-primary text-light'>Crear Post</Link ></li>
+        }
       </ul>
     </div> 
   </>

@@ -89,7 +89,7 @@ const Footer = () => {
 
   <div  className="text-center p-3" style={{backgroundColor: "rgba(0, 0, 0, 0.2)"}}>
     © 2023 Copyright:&nbsp;
-    <a  className="text-dark" href="#!">MiBlog.com</a>
+    <a  className="text-dark" href="#!">Entusmanos.com</a>
   </div>
   
 </footer> 

@@ -6,19 +6,11 @@ import Footer from "./Footer";
 const Home = () => {
   return (
   <>
-  <div id="home" className=''>
-    <header>
-      <Navbar />
-    </header>
-    <main>
-      <Hero />
-      <PostContainer id="1" title="Últimos Posts" />
-      <PostContainer id="2" title="Guías" />
-      <PostContainer id="3" title="Consejos" />
-      <PostContainer id="4" title="Sección sin contenido" />
-      <Footer />
-    </main>
-  </div>
+    <Hero />
+    <PostContainer key="1" id="1" sectionId="1" title="Últimos Posts" />
+    <PostContainer key="2" id="2" sectionId="2" title="Guías" />
+    <PostContainer key="3" id="3" sectionId="3" title="Consejos" />
+    <PostContainer key="4" id="4" sectionId="4" title="Sección sin contenido" />
   </>
 )};
 

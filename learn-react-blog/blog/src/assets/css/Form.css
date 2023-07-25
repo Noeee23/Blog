@@ -1,0 +1,23 @@
+#form{
+    background-color: aliceblue;
+  }
+  #form-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* max-height: 100vh; */
+    /* margin-top: 50px;
+    margin-bottom: 50px; */
+    background-color: aliceblue;
+  }
+  #form-container label,
+  #form-container input{
+    font-size: 1.25rem;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif!important;
+  }
+  #form-container label{
+    font-weight: bold;
+    text-transform: uppercase;
+    color: rgb(75, 75, 75);
+  }
